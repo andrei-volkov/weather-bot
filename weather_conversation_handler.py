@@ -12,6 +12,11 @@ CITY_KEY = 'city'
 
 WEATHER_PERIOD_REPLY_MARKUP = [['Current📗', 'Week📕']]
 
+keyboard = [[InlineKeyboardButton("Option 1", callback_data='1'),
+                 InlineKeyboardButton("Option 2", callback_data='2')],
+
+                [InlineKeyboardButton("Option 3", callback_data='3')]]
+
 
 def start(bot, update):
     update.message.reply_text(
@@ -39,16 +44,6 @@ def location_passed(bot, update, user_data):
 
     user_data[LONGITUDE_KEY] = str(user_location.longitude)
     user_data[LATITUDE_KEY] = str(user_location.latitude)
-
-    #
-    # response = weather_service.get_weather(user_location.latitude, user_location.longitude)
-    #
-    # update.message.reply_text('Current temp: ' + str(response['main']['temp']) + 'C'
-    #                           + '\nWeather: ' + response['weather'][0]['description']
-    #                           + '\nExpected temperature: '
-    #                           + str(response['main']['temp_min']) + ' - ' + str(response['main']['temp_max'])
-    #                           + '\nAtmosphere pressure: ' + str(response['main']['pressure'])
-    #                           + '\nWind speed: ' + str(response['wind']['speed']) + 'm/s')
 
     main.logger.info("Whether request from %s: %f / %f",
                      user.first_name,
