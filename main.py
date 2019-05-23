@@ -34,7 +34,8 @@ def main():
         entry_points=[CommandHandler('weather', weather_conversation_handler.weather)],
 
         states={
-            CITY: [MessageHandler(Filters.text, weather_conversation_handler.city_entered, pass_user_data=True),
+            CITY: [CallbackQueryHandler(weather_conversation_handler.favourite_city_choosed, pass_user_data=True),
+                   MessageHandler(Filters.text, weather_conversation_handler.city_entered, pass_user_data=True),
                    MessageHandler(Filters.location, weather_conversation_handler.location_passed, pass_user_data=True)],
 
             PERIOD: [CallbackQueryHandler(weather_conversation_handler.period_keyboard_pressed, pass_user_data=True)],

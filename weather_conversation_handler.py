@@ -2,6 +2,7 @@ import telegram
 from telegram import ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ConversationHandler
 
+import db_service
 import main
 import output_service
 import response_service
@@ -23,10 +24,21 @@ def start(bot, update):
 
 
 def weather(bot, update):
-    update.message.reply_text('*Great!*\nFirst of all, send me the name '
-                              'of city or geolocation.'
-                              '\n\n_To stop this brunch -_ /cancel',
-                              parse_mode=telegram.ParseMode.MARKDOWN)
+    if update.message.chat_id in db_service.users_cities:
+        city = db_service.users_cities[update.message.chat_id]
+        inline = [[InlineKeyboardButton(city, callback_data=update.message.chat_id)]]
+
+        update.message.reply_text('*Great!*\nFirst of all, send me the name '
+                                  'of city or geolocation. Also you can add favourite city'
+                                  '\n\n_To stop this brunch -_ /cancel',
+                                  parse_mode=telegram.ParseMode.MARKDOWN,
+                                  reply_markup=InlineKeyboardMarkup(inline))
+
+    else:
+        update.message.reply_text('*Great!*\nFirst of all, send me the name '
+                                  'of city or geolocation. Also you can add favourite city'
+                                  '\n\n_To stop this brunch -_ /cancel',
+                                  parse_mode=telegram.ParseMode.MARKDOWN)
     return main.CITY
 
 
@@ -37,7 +49,7 @@ def city_entered(bot, update, user_data):
 
     user_data[CITY_KEY] = update.message['text']  # provided by tg bot library
 
-    return main.PERIOD
+    return main.ENTER_PERIOD
 
 
 def location_passed(bot, update, user_data):
@@ -52,10 +64,7 @@ def location_passed(bot, update, user_data):
                      user_location.latitude,
                      user_location.longitude)
 
-    update.message.reply_text('Finally!\nChoose period.\n\nTo stop this brunch - /cancel',
-                              reply_markup=InlineKeyboardMarkup(WEATHER_PERIOD_KEYBOARD))
-
-    return main.PERIOD
+    return main.ENTER_PERIOD
 
 
 def period_keyboard_pressed(bot, update, user_data):
@@ -97,3 +106,22 @@ def cancel(bot, update):
     update.message.reply_text('Bye! I hope we can talk again some day.')
 
     return ConversationHandler.END
+
+
+def print_period_info(bot, update):
+    update.message.reply_text('*Finally!*\nChoose period.\n\n_To stop this brunch -_ /cancel',
+                              reply_markup=InlineKeyboardMarkup(WEATHER_PERIOD_KEYBOARD),
+                              parse_mode=telegram.ParseMode.MARKDOWN)
+
+
+def favourite_city_choosed(bot, update, user_data):
+    query = update.callback_query
+
+    key = int(query.data)
+    user_data[CITY_KEY] = db_service.users_cities[key]
+
+    bot.edit_message_text('Wait a minute',
+                          chat_id=query.message.chat_id,
+                          message_id=query.message.message_id)
+
+    return main.PERIOD
