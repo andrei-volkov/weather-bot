@@ -23,10 +23,39 @@ def current_weather(response):
            + '\nWind speed: ' + str(response['wind']['speed']) + 'm/s' + wind
 
 
+def detailed_weather(response):
+    current_date = None
+    result = ''
+
+    for time_point in response['list']:
+        if current_date is None:
+            current_date = time_point['dt_txt'].split(' ')[0]
+
+            result += 'Weather forecast for: *' + current_date + '* \n\n'
+        elif current_date not in time_point['dt_txt']:
+            break
+
+        weather_id = time_point['weather'][0]['id']
+
+        result += 'Time: ' + time_point['dt_txt'].split(' ')[1]
+        result += '\nWeather: ' + time_point['weather'][0]['description'] + get_emoji(weather_id)
+        result += '\nCurrent temperature: ' + str(time_point['main']['temp']) + '°C'
+        result += '\nWind speed: ' + str(time_point['wind']['speed']) + 'm/s' + wind + '\n\n'
+
+    return result
+
+
+def output_by_id(id, response):
+    if id == '1':
+        return current_weather(response)
+    elif id == '2':
+        return detailed_weather(response)
+
+
 def get_emoji(weather_id):
     if weather_id:
-        if str(weather_id)[
-            0] == '2' or weather_id == 900 or weather_id == 901 or weather_id == 902 or weather_id == 905:
+        if str(weather_id)[0] == '2' or weather_id == 900 or \
+                weather_id == 901 or weather_id == 902 or weather_id == 905:
             return thunderstorm
         elif str(weather_id)[0] == '3':
             return drizzle
