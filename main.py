@@ -1,4 +1,7 @@
 import logging
+import pymongo
+
+import db_service
 import favorite_city_conversation_handler
 import weather_conversation_handler
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler,
@@ -64,4 +67,7 @@ def main():
 
 
 if __name__ == '__main__':
+    for i in db_service.get_all_users():
+        print(i)
+
     main()
