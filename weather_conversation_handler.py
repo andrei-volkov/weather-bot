@@ -1,7 +1,9 @@
-from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
+import telegram
+from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ConversationHandler
 
 import main
+import print_service
 import weather_service
 
 WINK_EMOJI = u"\U0001F609"
@@ -12,10 +14,8 @@ CITY_KEY = 'city'
 
 WEATHER_PERIOD_REPLY_MARKUP = [['Current📗', 'Week📕']]
 
-keyboard = [[InlineKeyboardButton("Option 1", callback_data='1'),
-                 InlineKeyboardButton("Option 2", callback_data='2')],
-
-                [InlineKeyboardButton("Option 3", callback_data='3')]]
+WEATHER_TEST_KEYBOARD = [[InlineKeyboardButton("Current📗", callback_data='1'),
+                          InlineKeyboardButton("Week📕", callback_data='2')]]
 
 
 def start(bot, update):
@@ -24,14 +24,14 @@ def start(bot, update):
 
 
 def weather(bot, update):
-    update.message.reply_text('Ok!\nFirst of all, send me the name of your city(not implemented) or your geolocation'
+    update.message.reply_text('Great!\nFirst of all, send me the name of your city(not implemented) or your geolocation'
                               '.\nTo stop this brunch - /cancel')
     return main.CITY
 
 
 def city_entered(bot, update, user_data):
     update.message.reply_text('Finally!\nChoose period.\nTo stop this brunch - /cancel',
-                              reply_markup=ReplyKeyboardMarkup(WEATHER_PERIOD_REPLY_MARKUP, one_time_keyboard=True))
+                              reply_markup=InlineKeyboardMarkup(WEATHER_TEST_KEYBOARD))
 
     user_data[CITY_KEY] = update.message['text']  # provided by tg bot library
 
@@ -59,6 +59,10 @@ def location_passed(bot, update, user_data):
 def period_keyboard_pressed(bot, update, user_data):
     response = None
 
+    query = update.callback_query
+
+    bot.send_chat_action(chat_id=query.message.chat_id, action=telegram.ChatAction.TYPING)
+
     if CITY_KEY in user_data:
         response = weather_service.get_weather_by_city_name(user_data[CITY_KEY])
 
@@ -69,13 +73,15 @@ def period_keyboard_pressed(bot, update, user_data):
         del user_data[LONGITUDE_KEY]
         del user_data[LATITUDE_KEY]
 
-    update.message.reply_text('Current temp: ' + str(response['main']['temp']) + 'C'
-                              + '\nWeather: ' + response['weather'][0]['description']
-                              + '\nExpected temperature: '
-                              + str(response['main']['temp_min']) + ' - ' + str(response['main']['temp_max'])
-                              + '\nAtmosphere pressure: ' + str(response['main']['pressure'])
-                              + '\nWind speed: ' + str(response['wind']['speed']) + 'm/s',
-                              reply_markup=ReplyKeyboardRemove())
+    if '404' != response['cod']:
+        bot.edit_message_text(print_service.current_weather(response),
+                              chat_id=query.message.chat_id,
+                              message_id=query.message.message_id)
+    else:
+        bot.edit_message_text('**I can''t find this city.**\nPlease, if the name of city is right, call my developer '
+                              '@Anrix_official',
+                              chat_id=query.message.chat_id,
+                              message_id=query.message.message_id)
 
     return ConversationHandler.END
 

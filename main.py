@@ -2,7 +2,7 @@ import logging
 import favorite_city_conversation_handler
 import weather_conversation_handler
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler,
-                          ConversationHandler)
+                          ConversationHandler, CallbackQueryHandler)
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +12,7 @@ CITY, PERIOD = range(2)
 # favorite city conv states
 NOT_IMPLEMENTED = 0
 
-BOT_TOKEN = '847955543:AAFlUKvjw2gi5aZ5IVQlQlYxnUXOtl2rJCU'
+TOKEN = '847955543:AAFlUKvjw2gi5aZ5IVQlQlYxnUXOtl2rJCU'
 
 
 def error(bot, update, error):
@@ -24,7 +24,7 @@ def help(bot, update):
 
 
 def main():
-    updater = Updater(BOT_TOKEN)
+    updater = Updater(TOKEN)
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                         level=logging.INFO)
 
@@ -37,7 +37,7 @@ def main():
             CITY: [MessageHandler(Filters.text, weather_conversation_handler.city_entered, pass_user_data=True),
                    MessageHandler(Filters.location, weather_conversation_handler.location_passed, pass_user_data=True)],
 
-            PERIOD: [RegexHandler('^(Current📗|Week📕)$', weather_conversation_handler.period_keyboard_pressed, pass_user_data=True)],
+            PERIOD: [CallbackQueryHandler(weather_conversation_handler.period_keyboard_pressed, pass_user_data=True)],
         },
 
         fallbacks=[CommandHandler('cancel', weather_conversation_handler.cancel)]
