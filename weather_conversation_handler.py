@@ -1,11 +1,10 @@
 import telegram
-from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ConversationHandler
 
 import main
 import output_service
 import response_service
-import weather_service
 
 WINK_EMOJI = u"\U0001F609"
 
@@ -15,8 +14,7 @@ CITY_KEY = 'city'
 
 WEATHER_PERIOD_KEYBOARD = [[InlineKeyboardButton("Current", callback_data='1'),
                             InlineKeyboardButton("Full day", callback_data='2')],
-                           [InlineKeyboardButton("5 days", callback_data='3')],
-                           [InlineKeyboardButton("16 days", callback_data='4')]]
+                           [InlineKeyboardButton("5 days", callback_data='3')]]
 
 
 def start(bot, update):
@@ -70,11 +68,11 @@ def period_keyboard_pressed(bot, update, user_data):
     id = query.data
 
     if CITY_KEY in user_data:
-        response = response_service.get_by_query_id(id, user_data[CITY_KEY])
+        response = response_service.get_by_query_name(id, user_data[CITY_KEY])
 
         del user_data[CITY_KEY]
     else:
-        response = response_service.get_by_query_id(id, user_data[LATITUDE_KEY], user_data[LONGITUDE_KEY])
+        response = response_service.get_by_query_geo(id, user_data[LATITUDE_KEY], user_data[LONGITUDE_KEY])
 
         del user_data[LONGITUDE_KEY]
         del user_data[LATITUDE_KEY]

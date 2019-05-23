@@ -45,12 +45,33 @@ def detailed_weather(response):
     return result
 
 
+def week_weather(response):
+    current_date = None
+    result = ''
+
+    for time_point in response['list']:
+        if current_date is None or current_date != time_point['dt_txt'].split(' ')[0]:
+            current_date = time_point['dt_txt'].split(' ')[0]
+            result += 'Weather forecast for: *' + current_date + '* \n\n'
+
+        weather_id = time_point['weather'][0]['id']
+
+        result += 'Time: ' + time_point['dt_txt'].split(' ')[1]
+        result += '\nWeather: ' + time_point['weather'][0]['description'] + get_emoji(weather_id)
+        result += '\nCurrent temperature: ' + str(time_point['main']['temp']) + '°C'
+        result += '\nWind speed: ' + str(time_point['wind']['speed']) + 'm/s' + wind + '\n\n'
+
+    return result
+
+
 def output_by_id(id, response):
     if id == '1':
         return current_weather(response)
     elif id == '2':
         return detailed_weather(response)
-
+    elif id == '3':
+        return week_weather(response)
+    el
 
 def get_emoji(weather_id):
     if weather_id:
