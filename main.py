@@ -1,19 +1,16 @@
 import logging
-import pymongo
+
+from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackQueryHandler)
 
 import db_service
-import favorite_city_conversation_handler
+import settings_conversation_handler
 import weather_conversation_handler
-from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler,
-                          ConversationHandler, CallbackQueryHandler)
 
 logger = logging.getLogger(__name__)
 
-# weather conv states
 CITY, PERIOD = range(2)
 
-# favorite city conv states
-NOT_IMPLEMENTED = 0
+ENTER_CITY, CITY_ENTERED = range(2)
 
 TOKEN = '847955543:AAFlUKvjw2gi5aZ5IVQlQlYxnUXOtl2rJCU'
 
@@ -47,13 +44,14 @@ def main():
     )
 
     favorite_city_conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('add', favorite_city_conversation_handler.add)],
+        entry_points=[CommandHandler('settings', settings_conversation_handler.settings)],
 
         states={
-            NOT_IMPLEMENTED: [MessageHandler(Filters.text, favorite_city_conversation_handler.cancel)]
+            ENTER_CITY: [CallbackQueryHandler(settings_conversation_handler.new_city, pass_user_data=True)],
+            CITY_ENTERED: [MessageHandler(Filters.text, settings_conversation_handler.city_entered)]
         },
 
-        fallbacks=[CommandHandler('cancel', weather_conversation_handler.cancel)]
+        fallbacks=[CommandHandler('cancel', settings_conversation_handler.cancel)]
     )
 
     dp.add_handler(weather_conv_handler)
@@ -67,7 +65,5 @@ def main():
 
 
 if __name__ == '__main__':
-    for i in db_service.get_all_users():
-        print(i)
-
+    db_service.init()
     main()

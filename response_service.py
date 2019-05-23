@@ -15,3 +15,7 @@ def get_by_query_name(id, name):
         return weather_service.detailed_weather_by_city_name(name)
     else:
         return None
+
+
+def is_city_correct(name):
+    return '404' != weather_service.current_weather_by_city_name(name)['cod']

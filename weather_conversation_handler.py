@@ -1,8 +1,6 @@
 import telegram
-import pymongo
 from telegram import ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ConversationHandler
-
 
 import main
 import output_service
@@ -96,7 +94,6 @@ def period_keyboard_pressed(bot, update, user_data):
 def cancel(bot, update):
     user = update.message.from_user
     main.logger.info("User %s canceled the conversation.", user.first_name)
-    update.message.reply_text('Bye! I hope we can talk again some day.',
-                              reply_markup=ReplyKeyboardRemove())
+    update.message.reply_text('Bye! I hope we can talk again some day.')
 
     return ConversationHandler.END

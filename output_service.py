@@ -71,7 +71,7 @@ def output_by_id(id, response):
         return detailed_weather(response)
     elif id == '3':
         return week_weather(response)
-    el
+
 
 def get_emoji(weather_id):
     if weather_id:
