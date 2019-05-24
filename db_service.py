@@ -14,7 +14,6 @@ CITY_KEY = 'city'
 
 def init():
     for u in users.find({}):
-        print(u)
         users_cities[u[USER_ID_KEY]] = u[CITY_KEY]
 
 

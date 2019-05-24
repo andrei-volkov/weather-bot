@@ -17,6 +17,10 @@ WEATHER_PERIOD_KEYBOARD = [[InlineKeyboardButton("Current", callback_data='1'),
                             InlineKeyboardButton("Full day", callback_data='2')],
                            [InlineKeyboardButton("5 days", callback_data='3')]]
 
+WEATHER_START_MESSAGE= '*Great!*\nFirst of all, send me the name ' \
+                       'of city or geolocation. Also you can add favourite city from settings. ' \
+                       '\n\n_To stop this brunch -_ /cancel'
+
 PERIOD_STATE_TEXT = '*Finally!*\nChoose period.\n\n_To stop this brunch -_ /cancel'
 
 
@@ -30,16 +34,12 @@ def weather(bot, update):
         city = db_service.users_cities[update.message.chat_id]
         inline = [[InlineKeyboardButton(city, callback_data=update.message.chat_id)]]
 
-        update.message.reply_text('*Great!*\nFirst of all, send me the name '
-                                  'of city or geolocation. Also you can add favourite city'
-                                  '\n\n_To stop this brunch -_ /cancel',
+        update.message.reply_text(WEATHER_START_MESSAGE,
                                   parse_mode=telegram.ParseMode.MARKDOWN,
                                   reply_markup=InlineKeyboardMarkup(inline))
 
     else:
-        update.message.reply_text('*Great!*\nFirst of all, send me the name '
-                                  'of city or geolocation. Also you can add favourite city'
-                                  '\n\n_To stop this brunch -_ /cancel',
+        update.message.reply_text(WEATHER_START_MESSAGE,
                                   parse_mode=telegram.ParseMode.MARKDOWN)
     return main.ENTER_CITY
 
@@ -99,19 +99,12 @@ def period_keyboard_pressed(bot, update, user_data):
                               parse_mode=telegram.ParseMode.MARKDOWN)
     else:
         bot.edit_message_text('I can\'t find this city🙁'
-                              '\n\nPlease, if the name of the city is right, call my developer @Anrix_official',
+                              '\n\nPlease, if the name of the city is correct, call my developer @Anrix_official',
                               chat_id=query.message.chat_id,
                               message_id=query.message.message_id)
 
     return ConversationHandler.END
 
-
-def cancel(bot, update):
-    user = update.message.from_user
-    main.logger.info("User %s canceled the conversation.", user.first_name)
-    update.message.reply_text('Bye! I hope we can talk again some day.')
-
-    return ConversationHandler.END
 
 
 def print_period_info(bot, update):

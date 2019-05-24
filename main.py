@@ -3,6 +3,7 @@ import logging
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackQueryHandler)
 
 import db_service
+import main_conversation_handler
 import predict_conversation_handler
 import predictor_service
 import settings_conversation_handler
@@ -23,14 +24,6 @@ def error(bot, update, error):
     logger.warning('Update "%s" caused error "%s"', update, error)
 
 
-def help(bot, update):
-    update.message.reply_text('List of commands:'
-                              '\n\n/add - add favorite city'
-                              '\n/weather - show the weather'
-                              '\n/predict - weather prediction'
-                              '\n/setting - settings')
-
-
 def main():
     updater = Updater(TOKEN)
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -49,7 +42,7 @@ def main():
             PERIOD: [CallbackQueryHandler(weather_conversation_handler.period_keyboard_pressed, pass_user_data=True)],
         },
 
-        fallbacks=[CommandHandler('cancel', weather_conversation_handler.cancel)]
+        fallbacks=[CommandHandler('cancel', main_conversation_handler.cancel)]
     )
 
     favorite_city_conv_handler = ConversationHandler(
@@ -60,7 +53,7 @@ def main():
             CITY_ENTERED: [MessageHandler(Filters.text, settings_conversation_handler.city_entered)]
         },
 
-        fallbacks=[CommandHandler('cancel', settings_conversation_handler.cancel)]
+        fallbacks=[CommandHandler('cancel', main_conversation_handler.cancel)]
     )
 
     predictor_conv_handler = ConversationHandler(
@@ -70,14 +63,14 @@ def main():
             PREDICT_DATA_ENTERED: [MessageHandler(Filters.text, predict_conversation_handler.get_predict)]
         },
 
-        fallbacks=[CommandHandler('cancel', settings_conversation_handler.cancel)]
+        fallbacks=[CommandHandler('cancel', main_conversation_handler.cancel)]
     )
 
     dp.add_handler(weather_conv_handler)
     dp.add_handler(favorite_city_conv_handler)
     dp.add_handler(predictor_conv_handler)
 
-    dp.add_handler(CommandHandler('help', help))
+    dp.add_handler(CommandHandler('help', main_conversation_handler.help))
 
     dp.add_error_handler(error)
 

@@ -28,7 +28,6 @@ def init():
     y = df2['meantempm']
 
     X = sm.add_constant(X)
-    X.ix[:5, :5]
     X = X[['const', 'mintempm_1', 'mintempm_2', 'mintempm_3', 'maxdewptm_1', 'maxdewptm_3', 'mindewptm_1', 'maxtempm_1']]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=12)
 
