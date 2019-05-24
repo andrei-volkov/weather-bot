@@ -12,7 +12,6 @@ def start(update, context):
 
 def help(update, context):
     update.message.reply_text('List of commands:'
-                              '\n\n/add - add favorite city'
                               '\n/weather - show the weather'
                               '\n/predict - weather prediction'
                               '\n/setting - settings')

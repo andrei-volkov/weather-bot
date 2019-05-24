@@ -3,8 +3,7 @@ import threading
 import time
 
 import schedule
-from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackQueryHandler,
-                          PicklePersistence)
+from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackQueryHandler)
 
 import db_service
 import main_conversation_handler
@@ -22,6 +21,8 @@ ENTER_CITY, CITY_ENTERED = range(2)
 PREDICT_DATA_ENTERED = range(1)
 
 TOKEN = '847955543:AAFlUKvjw2gi5aZ5IVQlQlYxnUXOtl2rJCU'
+
+UPDATER = None
 
 
 def error(bot, update, error):
@@ -88,7 +89,6 @@ def main():
 
 def schedule_polling():
     while True:
-        print('as')
         schedule.run_pending()
         time.sleep(1)
 
@@ -101,11 +101,3 @@ if __name__ == '__main__':
     thread2.start()
 
     main()
-
-    #thread2.join()
-
-
-    #thread1 = threading.Thread(target=main)
-
-    #thread1.start()
-    #thread1.join()
