@@ -1,6 +1,10 @@
 import logging
+import threading
+import time
 
-from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackQueryHandler)
+import schedule
+from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackQueryHandler,
+                          PicklePersistence)
 
 import db_service
 import main_conversation_handler
@@ -25,7 +29,8 @@ def error(bot, update, error):
 
 
 def main():
-    updater = Updater(TOKEN)
+    updater = Updater(TOKEN, use_context=True)
+
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                         level=logging.INFO)
 
@@ -35,22 +40,24 @@ def main():
         entry_points=[CommandHandler('weather', weather_conversation_handler.weather)],
 
         states={
-            CITY: [CallbackQueryHandler(weather_conversation_handler.favourite_city_choosed, pass_user_data=True),
-                   MessageHandler(Filters.text, weather_conversation_handler.city_entered, pass_user_data=True),
-                   MessageHandler(Filters.location, weather_conversation_handler.location_passed, pass_user_data=True)],
+            CITY: [CallbackQueryHandler(weather_conversation_handler.favourite_city_choosed),
+                   MessageHandler(Filters.text, weather_conversation_handler.city_entered),
+                   MessageHandler(Filters.location, weather_conversation_handler.location_passed)],
 
-            PERIOD: [CallbackQueryHandler(weather_conversation_handler.period_keyboard_pressed, pass_user_data=True)],
+            PERIOD: [CallbackQueryHandler(weather_conversation_handler.period_keyboard_pressed)],
         },
 
         fallbacks=[CommandHandler('cancel', main_conversation_handler.cancel)]
     )
 
-    favorite_city_conv_handler = ConversationHandler(
+    settings_conv_handler = ConversationHandler(
         entry_points=[CommandHandler('settings', settings_conversation_handler.settings)],
 
         states={
-            ENTER_CITY: [CallbackQueryHandler(settings_conversation_handler.new_city, pass_user_data=True)],
-            CITY_ENTERED: [MessageHandler(Filters.text, settings_conversation_handler.city_entered)]
+            ENTER_CITY: [CallbackQueryHandler(settings_conversation_handler.button_clicked)],
+            CITY_ENTERED: [MessageHandler(Filters.text, settings_conversation_handler.data_entered,
+                                          pass_job_queue=True,
+                                          pass_chat_data=True)]
         },
 
         fallbacks=[CommandHandler('cancel', main_conversation_handler.cancel)]
@@ -67,9 +74,10 @@ def main():
     )
 
     dp.add_handler(weather_conv_handler)
-    dp.add_handler(favorite_city_conv_handler)
+    dp.add_handler(settings_conv_handler)
     dp.add_handler(predictor_conv_handler)
 
+    dp.add_handler(CommandHandler('start', main_conversation_handler.start))
     dp.add_handler(CommandHandler('help', main_conversation_handler.help))
 
     dp.add_error_handler(error)
@@ -78,7 +86,26 @@ def main():
     updater.idle()
 
 
+def schedule_polling():
+    while True:
+        print('as')
+        schedule.run_pending()
+        time.sleep(1)
+
+
 if __name__ == '__main__':
     db_service.init()
     predictor_service.init()
+
+    thread2 = threading.Thread(target=schedule_polling)
+    thread2.start()
+
     main()
+
+    #thread2.join()
+
+
+    #thread1 = threading.Thread(target=main)
+
+    #thread1.start()
+    #thread1.join()

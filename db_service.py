@@ -6,10 +6,12 @@ COLLECTION_NAME = 'users'
 
 client = pymongo.MongoClient(CLUSTER_URL)
 users = client[DB_NAME][COLLECTION_NAME]
+
 users_cities = {}
 
 USER_ID_KEY = 'user_id'
 CITY_KEY = 'city'
+TIME_KEY = 'time'
 
 
 def init():
@@ -17,6 +19,10 @@ def init():
         users_cities[u[USER_ID_KEY]] = u[CITY_KEY]
 
 
-def add(chat_id, city):
-    users_cities[chat_id] = city
-    users.insert({USER_ID_KEY: chat_id, CITY_KEY: city})
+def add_city(user_id, city):
+    if user_id not in users_cities:
+        users.insert({USER_ID_KEY: user_id, CITY_KEY: city, TIME_KEY: '_none_'})
+    else:
+        users.find_one_and_update({USER_ID_KEY: user_id}, {"$set": {CITY_KEY: city}});
+
+    users_cities[user_id] = city

@@ -5,7 +5,10 @@ import statsmodels.api as sm
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
-categories = ['const', 'mintempm_1', 'mintempm_2', 'mintempm_3', 'maxdewptm_1', 'maxdewptm_3', 'mindewptm_1',
+categories = ['const',
+              'mintempm_1', 'mintempm_2', 'mintempm_3',
+              'maxdewptm_1', 'maxdewptm_3',
+              'mindewptm_1',
               'maxtempm_1']
 daily_summary = namedtuple("DailySummary", categories)
 

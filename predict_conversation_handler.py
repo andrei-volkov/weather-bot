@@ -19,7 +19,7 @@ EROR_MESSAGE = 'Incorrect data'
 AVERAGE_TEMP = 'Average temp today will be: '
 
 
-def predict(bot, update):
+def predict(update, context):
     update.message.reply_text(INFO_MESSAGE,
                               parse_mode=telegram.ParseMode.MARKDOWN)
 
@@ -27,7 +27,7 @@ def predict(bot, update):
     return main.PREDICT_DATA_ENTERED
 
 
-def get_predict(bot, update):
+def get_predict(update, context):
     data = update.message.text.split(' ')
 
     if len(data) != 7:
