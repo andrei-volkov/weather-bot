@@ -3,6 +3,7 @@ import logging
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackQueryHandler)
 
 import db_service
+import predictor_service
 import settings_conversation_handler
 import weather_conversation_handler
 
@@ -67,4 +68,5 @@ def main():
 
 if __name__ == '__main__':
     #db_service.init()
+    predictor_service.init()
     main()

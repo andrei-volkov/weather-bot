@@ -1,5 +1,5 @@
 import telegram
-from telegram import ReplyKeyboardRemove, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ConversationHandler
 
 import db_service
@@ -70,7 +70,7 @@ def location_passed(bot, update, user_data):
                               reply_markup=InlineKeyboardMarkup(WEATHER_PERIOD_KEYBOARD),
                               parse_mode=telegram.ParseMode.MARKDOWN)
 
-    return main.ENTER_PERIOD
+    return main.PERIOD
 
 
 def period_keyboard_pressed(bot, update, user_data):
