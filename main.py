@@ -2,7 +2,7 @@ import logging
 
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackQueryHandler)
 
-import db_service
+import predict_conversation_handler
 import predictor_service
 import settings_conversation_handler
 import weather_conversation_handler
@@ -12,6 +12,8 @@ logger = logging.getLogger(__name__)
 CITY, PERIOD = range(2)
 
 ENTER_CITY, CITY_ENTERED = range(2)
+
+PREDICT_DATA_ENTERED = range(1)
 
 TOKEN = '847955543:AAFlUKvjw2gi5aZ5IVQlQlYxnUXOtl2rJCU'
 
@@ -56,8 +58,20 @@ def main():
         fallbacks=[CommandHandler('cancel', settings_conversation_handler.cancel)]
     )
 
+    predictor_conv_handler = ConversationHandler(
+        entry_points=[CommandHandler('predict', predict_conversation_handler.predict)],
+
+        states={
+            PREDICT_DATA_ENTERED: [MessageHandler(Filters.text, predict_conversation_handler.get_predict)]
+        },
+
+        fallbacks=[CommandHandler('cancel', settings_conversation_handler.cancel)]
+    )
+
     dp.add_handler(weather_conv_handler)
     dp.add_handler(favorite_city_conv_handler)
+    dp.add_handler(predictor_conv_handler)
+
     dp.add_handler(CommandHandler('help', help))
 
     dp.add_error_handler(error)

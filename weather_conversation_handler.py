@@ -41,7 +41,7 @@ def weather(bot, update):
                                   'of city or geolocation. Also you can add favourite city'
                                   '\n\n_To stop this brunch -_ /cancel',
                                   parse_mode=telegram.ParseMode.MARKDOWN)
-    return main.CITY
+    return main.ENTER_CITY
 
 
 def city_entered(bot, update, user_data):
@@ -51,7 +51,7 @@ def city_entered(bot, update, user_data):
 
     user_data[CITY_KEY] = update.message['text']  # provided by tg bot library
 
-    return main.ENTER_PERIOD
+    return main.CITY_ENTERED
 
 
 def location_passed(bot, update, user_data):

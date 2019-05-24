@@ -3,9 +3,8 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ConversationHandler
 
 import db_service
-import output_service
 import response_service
-from main import logger, ENTER_CITY, PERIOD, CITY_ENTERED
+from main import ENTER_CITY, CITY_ENTERED
 
 CITY_KEYBOARD = [[InlineKeyboardButton("Set favourite city", callback_data='1')]]
 
