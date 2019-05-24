@@ -12,10 +12,12 @@ INFO_MESSAGE = 'Please send me list of some params:' \
                '\n- Max dew Point 3 day ago(°C)' \
                '\n- Min dew Point 1 day ago(°C)' \
                '\n- Max temp 1 day ago' \
-               '\n\n__Be careful, the sequence is important.__'
+               '\n\nExample: `8 11 12 14 13 7 20`' \
+               '\nBe careful, the *sequence* is important.'
 
 EROR_MESSAGE = 'Incorrect data'
 AVERAGE_TEMP = 'Average temp today will be: '
+
 
 def predict(bot, update):
     update.message.reply_text(INFO_MESSAGE,

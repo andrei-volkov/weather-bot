@@ -23,9 +23,9 @@ def new_city(bot, update, user_data):
     query = update.callback_query
 
     bot.edit_message_text('Fine!\nNow, please, send me the name of the city.',
-                              chat_id=query.message.chat_id,
-                              message_id=query.message.message_id,
-                              parse_mode=telegram.ParseMode.MARKDOWN)
+                          chat_id=query.message.chat_id,
+                          message_id=query.message.message_id,
+                          parse_mode=telegram.ParseMode.MARKDOWN)
     return CITY_ENTERED
 
 
@@ -40,5 +40,6 @@ def city_entered(bot, update):
         db_service.add(update.message.chat_id, update.message.text)
     else:
         update.message.reply_text('I can\'t find this city😞')
+        return CITY_ENTERED
 
     return ConversationHandler.END

@@ -2,6 +2,7 @@ import logging
 
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackQueryHandler)
 
+import db_service
 import predict_conversation_handler
 import predictor_service
 import settings_conversation_handler
@@ -23,7 +24,11 @@ def error(bot, update, error):
 
 
 def help(bot, update):
-    update.message.reply_text('List of commands:\n/add - add favorite city\n/weather - show the weather')
+    update.message.reply_text('List of commands:'
+                              '\n\n/add - add favorite city'
+                              '\n/weather - show the weather'
+                              '\n/predict - weather prediction'
+                              '\n/setting - settings')
 
 
 def main():
@@ -81,6 +86,6 @@ def main():
 
 
 if __name__ == '__main__':
-    #db_service.init()
+    db_service.init()
     predictor_service.init()
     main()
