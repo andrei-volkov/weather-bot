@@ -66,5 +66,5 @@ def main():
 
 
 if __name__ == '__main__':
-    db_service.init()
+    #db_service.init()
     main()

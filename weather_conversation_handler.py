@@ -17,6 +17,8 @@ WEATHER_PERIOD_KEYBOARD = [[InlineKeyboardButton("Current", callback_data='1'),
                             InlineKeyboardButton("Full day", callback_data='2')],
                            [InlineKeyboardButton("5 days", callback_data='3')]]
 
+PERIOD_STATE_TEXT = '*Finally!*\nChoose period.\n\n_To stop this brunch -_ /cancel'
+
 
 def start(bot, update):
     update.message.reply_text(
@@ -43,7 +45,7 @@ def weather(bot, update):
 
 
 def city_entered(bot, update, user_data):
-    update.message.reply_text('*Finally!*\nChoose period.\n\n_To stop this brunch -_ /cancel',
+    update.message.reply_text(PERIOD_STATE_TEXT,
                               reply_markup=InlineKeyboardMarkup(WEATHER_PERIOD_KEYBOARD),
                               parse_mode=telegram.ParseMode.MARKDOWN)
 
@@ -63,6 +65,10 @@ def location_passed(bot, update, user_data):
                      user.first_name,
                      user_location.latitude,
                      user_location.longitude)
+
+    update.message.reply_text(PERIOD_STATE_TEXT,
+                              reply_markup=InlineKeyboardMarkup(WEATHER_PERIOD_KEYBOARD),
+                              parse_mode=telegram.ParseMode.MARKDOWN)
 
     return main.ENTER_PERIOD
 
@@ -120,8 +126,10 @@ def favourite_city_choosed(bot, update, user_data):
     key = int(query.data)
     user_data[CITY_KEY] = db_service.users_cities[key]
 
-    bot.edit_message_text('Wait a minute',
+    bot.edit_message_text(PERIOD_STATE_TEXT,
                           chat_id=query.message.chat_id,
-                          message_id=query.message.message_id)
+                          message_id=query.message.message_id,
+                          parse_mode=telegram.ParseMode.MARKDOWN,
+                          reply_markup=InlineKeyboardMarkup(WEATHER_PERIOD_KEYBOARD))
 
     return main.PERIOD

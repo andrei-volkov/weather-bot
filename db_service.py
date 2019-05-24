@@ -20,4 +20,4 @@ def init():
 
 def add(chat_id, city):
     users_cities[chat_id] = city
-    users.insert({USER_ID_KEY: chat_id, CITY_KEY: city})
+    #users.insert({USER_ID_KEY: chat_id, CITY_KEY: city})
