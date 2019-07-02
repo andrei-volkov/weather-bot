@@ -25,10 +25,10 @@ Bot based on a polling (not webhook) using [python-telegram-bot](https://github.
  - `conversation_handler` package contains answers for different conversation brunches (Read [conversaion handler](https://python-telegram-bot.readthedocs.io/en/stable/telegram.ext.conversationhandler.html)).
  - `service` package contains some utils, the main ones are:
    - `alert_service` - sends alerts using telegram bot api.
-   - `db_service` - works with mongo atlas(saves favourite user cities and time for alerts) 
-   - `predictor_service`- returns weather prediction by params list
-   - `weather_service` - works with openweathermap
- - `main.py` - launches all services
+   - `db_service` - works with mongo atlas(saves favourite user cities and time for alerts). 
+   - `predictor_service`- returns weather prediction by params list.
+   - `weather_service` - works with openweathermap.
+ - `main.py` - launches all services.
  
 ## Screenshots
 
@@ -54,9 +54,9 @@ Bot based on a polling (not webhook) using [python-telegram-bot](https://github.
 
 
 ## TODO
-- [ ] Fix some problems with db
-- [ ] Add more forecast periods
-- [ ] Something else :)
+- [ ] Fix some problems with db.
+- [ ] Add more forecast periods.
+- [ ] Something else. :)
 
 ## P.S.
-All tokens are invalid :D
+All tokens are invalid. :D
