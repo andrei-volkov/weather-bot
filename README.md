@@ -1,6 +1,5 @@
 # Weatheric
 
-----------
 
 Telegram bot that provide weather forecast by geolocation or city name.  
   
