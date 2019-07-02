@@ -2,10 +2,8 @@ import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ConversationHandler
 
-import db_service
 import main
-import output_service
-import response_service
+from service import output_service, db_service, response_service
 
 LATITUDE_KEY = 'lat'
 LONGITUDE_KEY = 'lon'

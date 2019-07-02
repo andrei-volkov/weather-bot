@@ -2,15 +2,15 @@ import telegram
 
 from telegram.ext import ConversationHandler
 
-import predictor_service
+from service import predictor_service
 
 INFO_MESSAGE = 'Please send me list of some params:' \
                '\n- Min temp 1 day ago' \
                '\n- Min temp 2 days ago' \
                '\n- Min temp 3 days ago' \
-               '\n- Max dew Point 1 day ago(°C)' \
-               '\n- Max dew Point 3 day ago(°C)' \
-               '\n- Min dew Point 1 day ago(°C)' \
+               '\n- Max dew point 1 day ago(°C)' \
+               '\n- Max dew point 3 day ago(°C)' \
+               '\n- Min dew point 1 day ago(°C)' \
                '\n- Max temp 1 day ago' \
                '\n\nExample: `8 11 12 14 13 7 20`' \
                '\nBe careful, the *sequence* is important.'

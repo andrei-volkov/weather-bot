@@ -5,12 +5,9 @@ import time
 import schedule
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, ConversationHandler, CallbackQueryHandler)
 
-import db_service
-import main_conversation_handler
-import predict_conversation_handler
-import predictor_service
-import settings_conversation_handler
-import weather_conversation_handler
+from service import db_service, predictor_service
+
+TOKEN = '847955543:AAHV5PB_U5uvBaxKNWw7Pmow8BX3qSMEU6M'
 
 logger = logging.getLogger(__name__)
 
@@ -20,8 +17,6 @@ ENTER_CITY, CITY_ENTERED = range(2)
 
 PREDICT_DATA_ENTERED = range(1)
 
-TOKEN = '847955543:AAFlUKvjw2gi5aZ5IVQlQlYxnUXOtl2rJCU'
-
 UPDATER = None
 
 
@@ -30,6 +25,10 @@ def error(bot, update, error):
 
 
 def main():
+    from conversation_handler import predict_conversation_handler, main_conversation_handler, \
+        weather_conversation_handler, \
+        settings_conversation_handler
+
     updater = Updater(TOKEN, use_context=True)
 
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',

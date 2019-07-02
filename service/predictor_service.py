@@ -12,11 +12,11 @@ categories = ['const',
               'maxtempm_1']
 daily_summary = namedtuple("DailySummary", categories)
 
-regressor = LinearRegression()
+reg = LinearRegression()
 
 
 def init():
-    df = pd.read_csv('end-part2_df.csv').set_index('date')
+    df = pd.read_csv('weather_dataset.csv').set_index('date')
 
     predictors = ['meantempm_1', 'meantempm_2', 'meantempm_3',
                   'mintempm_1', 'mintempm_2', 'mintempm_3',
@@ -27,14 +27,15 @@ def init():
 
     df2 = df[['meantempm'] + predictors]
 
-    X = df2[predictors]
+    x = df2[predictors]
     y = df2['meantempm']
 
-    X = sm.add_constant(X)
-    X = X[['const', 'mintempm_1', 'mintempm_2', 'mintempm_3', 'maxdewptm_1', 'maxdewptm_3', 'mindewptm_1', 'maxtempm_1']]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=12)
+    x = sm.add_constant(x)
+    x = x[['const', 'mintempm_1', 'mintempm_2', 'mintempm_3', 'maxdewptm_1', 'maxdewptm_3', 'mindewptm_1', 'maxtempm_1']]
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.1, random_state=12)
 
-    regressor.fit(X_train, y_train)
+
+    reg.fit(x_train, y_train)
 
 
 def get_predict(coefficients):
@@ -42,4 +43,4 @@ def get_predict(coefficients):
     for a in coefficients:
         vector.append(a)
 
-    return regressor.predict([vector])[0]
+    return reg.predict([vector])[0]

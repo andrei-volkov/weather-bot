@@ -1,4 +1,4 @@
-import weather_service
+from service import weather_service
 
 
 def get_by_query_geo(id, lat, lon):

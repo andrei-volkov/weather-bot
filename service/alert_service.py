@@ -1,10 +1,8 @@
 import requests
 import schedule
 
-import db_service
 import main
-import output_service
-import response_service
+from service import output_service, db_service, response_service
 
 alerts = {}
 BASE_URL = 'https://api.telegram.org/bot' + main.TOKEN + \

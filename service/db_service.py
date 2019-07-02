@@ -1,8 +1,8 @@
 import pymongo
 
-import alert_service
+from service import alert_service
 
-CLUSTER_URL = 'mongodb+srv://anrix:uh28IkToDvmTd2aG@cluster0-xqrtl.mongodb.net/admin'
+CLUSTER_URL = 'mongodb+srv://anrix:X424eWKI4MEGea2r@cluster0-xqrtl.mongodb.net/admin'
 DB_NAME = 'all_data'
 COLLECTION_NAME = 'users'
 

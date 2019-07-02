@@ -1,14 +1,8 @@
-from datetime import datetime, date, time
-
-import schedule as schedule
 import telegram
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ConversationHandler
 
-import alert_service
-import db_service
-import output_service
-import response_service
+from service import db_service, alert_service, response_service
 
 CITY_KEYBOARD = [[InlineKeyboardButton("Set favourite city", callback_data='1')],
                  [InlineKeyboardButton("Set time of alert", callback_data='2')]]
