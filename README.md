@@ -35,22 +35,22 @@ Bot based on a polling (not webhook) using [python-telegram-bot](https://github.
 
 <p align="center">
   <h3>Favorite city</h3>
-  <img src="images/img3.jpg">
+  <img width="360" height="445"  src="images/img3.jpg">
 </p>    
 
 <p align="center">
   <h3>Forecast periods</h3>
-  <img src="images/img6.jpg" >
+  <img width="360" height="445"  src="images/img6.jpg" >
 </p>    
 
 <p align="center">
   <h3>Settings</h3>
-  <img src="images/img4.jpg">
+  <img width="360" height="445"  src="images/img4.jpg">
 </p>    
 
 <p align="center">
   <h3>Weather prediction</h3>
-  <img src="images/img5.jpg" >
+  <img width="360" height="640"   src="images/img5.jpg" >
 </p>    
 
 
