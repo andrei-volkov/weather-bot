@@ -5,7 +5,7 @@
 Telegram bot that provide weather forecast by geolocation or city name.  
   
 <p align="center">
-  <img src="demo_images/demo1.gif">
+  <img src="images/demo1.gif">
 </p>    
   
   
@@ -35,22 +35,22 @@ Bot based on a polling (not webhook) using [python-telegram-bot](https://github.
 
 <p align="center">
   <h3>Favorite city</h3>
-  <img width="500" height="500" src="images/img3.jpg">
+  <img src="images/img3.jpg">
 </p>    
 
 <p align="center">
   <h3>Forecast periods</h3>
-  <img width="500" height="500" src="images/img6.jpg" >
+  <img src="images/img6.jpg" >
 </p>    
 
 <p align="center">
   <h3>Settings</h3>
-  <img width="500" height="500" src="images/img4.jpg">
+  <img src="images/img4.jpg">
 </p>    
 
 <p align="center">
   <h3>Weather prediction</h3>
-  <img width="500" height="800" src="images/img5.jpg" >
+  <img src="images/img5.jpg" >
 </p>    
 
 
