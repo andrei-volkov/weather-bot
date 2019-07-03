@@ -18,7 +18,7 @@ Bot based on a polling (not webhook) using [python-telegram-bot](https://github.
 ## Features
 - Current weather and forecasts in your city.
 - Fully usable with buttons - no need to enter city(geolocation) everytime.
-- Notifies you about the current at the specified time.
+- Notifies you about the current weather at the specified time.
 - Supports weather prediction by some params (model based on Linear Regression).
 
 ## Project stucture
