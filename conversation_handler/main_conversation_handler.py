@@ -2,12 +2,12 @@ from telegram.ext import ConversationHandler
 
 import main
 
-WINK_EMOJI = u"\U0001F609"
+wink_emoji = u"\U0001F609"
 
 
 def start(update, context):
     update.message.reply_text('Hi!\nMy name is weatheric. \nIf curious about the weather,'
-                              '\nyou in the right place😉' + WINK_EMOJI)
+                              '\nyou in the right place😉' + wink_emoji)
 
 
 def help(update, context):

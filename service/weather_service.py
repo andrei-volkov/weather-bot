@@ -1,51 +1,45 @@
 import requests
 
-OPEN_WEATHER_API_KEY = '440fe8d0120f53d0f7e381a3e91201b5'
+openweathermap_api_key = 'api_key'
 
-BASE_URL = 'http://api.openweathermap.org/data/2.5/'
+base_url = 'http://api.openweathermap.org/data/2.5/'
 
-WEATHER_LAT_PARAM = 'lat='
-WEATHER_LON_PARAM = '&lon='
+city_name_param, lat_param, lon_param = 'q=', 'lat=', '&lon='
+current_param, detailed_param = 'weather?', 'forecast?'
 
-WEATHER_CURRENT = 'weather?'
-WEATHER_DETAILED = 'forecast?'
-
-WEATHER_CITY_PARAM = 'q='
-
-WEATHER_CELSIUS_PARAM = '&units=metric'
-
-APP_ID_URL = '&appid='
+celsius_param = '&units=metric'
+app_id_param = '&appid='
 
 
-def current_weather_by_geo(lat, lon):
-    url = BASE_URL + WEATHER_CURRENT \
-          + WEATHER_LAT_PARAM + lat \
-          + WEATHER_LON_PARAM + lon \
-          + APP_ID_URL + OPEN_WEATHER_API_KEY + WEATHER_CELSIUS_PARAM
+def current_by_geolocation(lat, lon):
+    url = base_url + current_param \
+          + lat_param + lat \
+          + lon_param + lon \
+          + app_id_param + openweathermap_api_key + celsius_param
 
     return requests.get(url).json()
 
 
-def current_weather_by_city_name(name):
-    url = BASE_URL + WEATHER_CURRENT + \
-          WEATHER_CITY_PARAM + name \
-          + APP_ID_URL + OPEN_WEATHER_API_KEY + WEATHER_CELSIUS_PARAM
+def current_by_city_name(name):
+    url = base_url + current_param + \
+          city_name_param + name \
+          + app_id_param + openweathermap_api_key + celsius_param
 
     return requests.get(url).json()
 
 
-def detailed_weather_by_geo(lat, lon):
-    url = BASE_URL + WEATHER_DETAILED \
-          + WEATHER_LAT_PARAM + lat \
-          + WEATHER_LON_PARAM + lon \
-          + APP_ID_URL + OPEN_WEATHER_API_KEY + WEATHER_CELSIUS_PARAM
+def detailed_by_geolocation(lat, lon):
+    url = base_url + detailed_param \
+          + lat_param + lat \
+          + lon_param + lon \
+          + app_id_param + openweathermap_api_key + celsius_param
 
     return requests.get(url).json()
 
 
-def detailed_weather_by_city_name(name):
-    url = BASE_URL + WEATHER_DETAILED + \
-          WEATHER_CITY_PARAM + name \
-          + APP_ID_URL + OPEN_WEATHER_API_KEY + WEATHER_CELSIUS_PARAM
+def detailed_by_city_name(name):
+    url = base_url + detailed_param + \
+          city_name_param + name \
+          + app_id_param + openweathermap_api_key + celsius_param
 
     return requests.get(url).json()

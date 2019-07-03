@@ -64,7 +64,7 @@ def week_weather(response):
     return result
 
 
-def output_by_id(id, response):
+def get_weather(id, response):
     if id == '1':
         return current_weather(response)
     elif id == '2':

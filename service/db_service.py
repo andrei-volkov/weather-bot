@@ -2,35 +2,32 @@ import pymongo
 
 from service import alert_service
 
-CLUSTER_URL = 'mongodb+srv://anrix:X424eWKI4MEGea2r@cluster0-xqrtl.mongodb.net/admin'
-DB_NAME = 'all_data'
-COLLECTION_NAME = 'users'
+cluster = 'cluster_url'
 
-client = pymongo.MongoClient(CLUSTER_URL)
-users = client[DB_NAME][COLLECTION_NAME]
+name, collection = 'database_name', 'collection_name'
 
-users_cities = {}
+client = pymongo.MongoClient(cluster)
+users = client[name][collection]
+cities = {}
 
-USER_ID_KEY = 'user_id'
-CITY_KEY = 'city'
-TIME_KEY = 'time'
+user_id_key, city_key, time_key = 'user_id', 'city', 'time'
 
 
 def init():
     for u in users.find({}):
-        users_cities[u[USER_ID_KEY]] = u[CITY_KEY]
+        cities[u[user_id_key]] = u[city_key]
 
-        alert_service.add_alert(u[TIME_KEY], u[USER_ID_KEY])
+        alert_service.add_alert(u[time_key], u[user_id_key])
 
 
 def add_city(user_id, city):
-    if user_id not in users_cities:
-        users.insert({USER_ID_KEY: user_id, CITY_KEY: city, TIME_KEY: '_none_'})
+    if user_id not in cities:
+        users.insert({user_id_key: user_id, city_key: city, time_key: '_none_'})
     else:
-        users.find_one_and_update({USER_ID_KEY: user_id}, {"$set": {CITY_KEY: city}})
+        users.find_one_and_update({user_id_key: user_id}, {"$set": {city_key: city}})
 
-    users_cities[user_id] = city
+    cities[user_id] = city
 
 
 def add_alert(user_id, time):
-    users.find_one_and_update({USER_ID_KEY: user_id}, {"$set": {TIME_KEY: time}})
+    users.find_one_and_update({user_id_key: user_id}, {"$set": {time_key: time}})

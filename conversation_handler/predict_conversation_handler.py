@@ -4,43 +4,38 @@ from telegram.ext import ConversationHandler
 
 from service import predictor_service
 
-INFO_MESSAGE = 'Please send me list of some params:' \
-               '\n- Min temp 1 day ago' \
-               '\n- Min temp 2 days ago' \
-               '\n- Min temp 3 days ago' \
-               '\n- Max dew point 1 day ago(°C)' \
-               '\n- Max dew point 3 day ago(°C)' \
-               '\n- Min dew point 1 day ago(°C)' \
-               '\n- Max temp 1 day ago' \
-               '\n\nExample: `8 11 12 14 13 7 20`' \
-               '\nBe careful, the *sequence* is important.'
+error_message = 'Incorrect data'
+result_message = 'Average temp today will be: '
+predictor_params_message = 'Please send me list of some params:' \
+                           '\n- Min temp 1 day ago' \
+                           '\n- Min temp 2 days ago' \
+                           '\n- Min temp 3 days ago' \
+                           '\n- Max dew point 1 day ago(°C)' \
+                           '\n- Max dew point 3 day ago(°C)' \
+                           '\n- Min dew point 1 day ago(°C)' \
+                           '\n- Max temp 1 day ago' \
+                           '\n\nExample: `8 11 12 14 13 7 20`' \
+                           '\nBe careful, the *sequence* is important.'
 
-EROR_MESSAGE = 'Incorrect data'
-AVERAGE_TEMP = 'Average temp today will be: '
 
-
-def predict(update, context):
-    update.message.reply_text(INFO_MESSAGE,
-                              parse_mode=telegram.ParseMode.MARKDOWN)
+def start(update, context):
+    update.message.reply_text(predictor_params_message, parse_mode=telegram.ParseMode.MARKDOWN)
 
     import main
-    return main.PREDICT_DATA_ENTERED
+    return main.prediction_params_entered
 
 
-def get_predict(update, context):
+def prediction(update, context):
     data = update.message.text.split(' ')
 
     if len(data) != 7:
-        update.message.reply_text(EROR_MESSAGE,
-                                  parse_mode=telegram.ParseMode.MARKDOWN)
+        update.message.reply_text(error_message, parse_mode=telegram.ParseMode.MARKDOWN)
     else:
         data_int = list(map(int, data))
         data_int.insert(0, 1)
 
-        temp = round(predictor_service.get_predict(data_int), 2)
+        temp = round(predictor_service.get_prediction(data_int), 2)
 
-        update.message.reply_text(AVERAGE_TEMP
-                                  + str(temp) + '(°C)',
-                                  parse_mode=telegram.ParseMode.MARKDOWN)
+        update.message.reply_text(result_message + str(temp) + '(°C)', parse_mode=telegram.ParseMode.MARKDOWN)
 
     return ConversationHandler.END
